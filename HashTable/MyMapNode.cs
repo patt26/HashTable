@@ -54,7 +54,46 @@ namespace HashTable
             }
             return default(V);
         }
+        public void Frequency(string Line,string item)
+        {
+            string[] array = Line.Split(' ');
+            MyMapNode<string, int> hash = new MyMapNode<string, int>(array.Length);
+            foreach(string word in array)
+            {
+                if (hash.Get(word) != null)
+                {
+                    int count = hash.Get(word);
+                    hash.Remove(word);
+                    hash.Add(word,count + 1);
+                }
+                else
+                {
+                    hash.Add(word, 1);
+                }
+            }
+            Console.WriteLine("Count of " + item + " is " + hash.Get(item));
+        }
+        public void Remove(K key)
+        {
+            int position = GetArrayPosition(key);
+            LinkedList<KeyValue<K, V>> linkedList = GetLinkedList(position);
+            bool itemFound = false;
+            KeyValue<K, V> foundItem = default(KeyValue<K, V>);
+            foreach (KeyValue<K, V> item in linkedList)
+            {
+                if (item.Key.Equals(key))
+                {
+                    itemFound = true;
+                    foundItem = item;
+                }
+            }
+            if (itemFound)
+            {
+                linkedList.Remove(foundItem);
+            }
+        }
     }
+    
 
     public struct KeyValue<k, v>
     {
